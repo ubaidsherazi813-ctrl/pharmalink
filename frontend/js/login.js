@@ -1,29 +1,48 @@
 import { api, setSession, toast, withLoading, $ } from './common.js';
-if (localStorage.getItem('pl_token')) location.href = '/dashboard.html';
 
 let mode = 'login';
 function setMode(m) {
   mode = m;
   const login = m === 'login';
-  $('tabLogin').classList.toggle('active', login); $('tabReg').classList.toggle('active', !login);
+  $('tabLogin').classList.toggle('active', login);
+  $('tabReg').classList.toggle('active', !login);
   $('nameRow').classList.toggle('hidden', login);
-  $('submitBtn').textContent = login ? 'Login' : 'Create account';
-  $('heading').textContent = login ? 'Welcome back 👋' : 'Create your account';
+  $('submitBtn').textContent = login ? 'Sign In to Dashboard' : 'Complete Registration';
+  $('heading').textContent = login ? 'Welcome Back 👋' : 'Create Staff Account';
   $('password').autocomplete = login ? 'current-password' : 'new-password';
-  ['eName', 'eEmail', 'ePassword'].forEach(id => $(id).textContent = '');
+  ['eName', 'eEmail', 'ePassword'].forEach(id => {
+    const el = $(id);
+    if (el) el.textContent = '';
+  });
 }
+
 $('tabLogin').onclick = () => setMode('login');
 $('tabReg').onclick = () => setMode('register');
-$('togglePw').onclick = () => { $('password').type = $('password').type === 'password' ? 'text' : 'password'; };
+$('togglePw').onclick = () => {
+  const p = $('password');
+  p.type = p.type === 'password' ? 'text' : 'password';
+};
+
+// Agar URL mein ?reg=1 ho to registration tab direct open ho
+if (new URLSearchParams(location.search).get('reg')) {
+  setMode('register');
+}
 
 function validate() {
   let ok = true;
-  const set = (id, msg) => { $(id).textContent = msg; if (msg) ok = false; };
-  set('eName', mode === 'register' && $('name').value.trim().length < 2 ? 'Enter your name' : '');
-  set('eEmail', /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test($('email').value.trim()) ? '' : 'Enter a valid email');
-  const p = $('password').value;
-  set('ePassword', mode === 'login' ? (p ? '' : 'Enter your password')
-    : (p.length >= 8 && /\d/.test(p) && /[A-Z]/.test(p) ? '' : 'Min 8 characters, one number, one capital letter'));
+  const set = (id, msg) => {
+    const el = $(id);
+    if (el) el.textContent = msg;
+    if (msg) ok = false;
+  };
+  const nameVal = $('name').value.trim();
+  const emailVal = $('email').value.trim();
+  const pVal = $('password').value;
+
+  set('eName', mode === 'register' && nameVal.length < 2 ? 'Please enter your full name' : '');
+  set('eEmail', /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailVal) ? '' : 'Please enter a valid email address');
+  set('ePassword', mode === 'login' ? (pVal ? '' : 'Please enter your password')
+    : (pVal.length >= 8 && /\d/.test(pVal) && /[A-Z]/.test(pVal) ? '' : 'Min 8 characters with at least one number and one capital letter'));
   return ok;
 }
 
