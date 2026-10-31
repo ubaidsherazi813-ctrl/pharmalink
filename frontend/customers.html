@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Patients & Prescriptions · PharmaPulse PRO</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/variables.css">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<div class="app">
+  <aside class="sidebar" id="sidebar"></aside>
+
+  <div class="content">
+    <header class="topbar" id="topbar"></header>
+
+    <main class="page">
+      <div class="page-head">
+        <div>
+          <h1>👥 Patients & Prescriptions (Rx)</h1>
+          <p class="muted">Patient directory, allergy tracking & doctor prescription records</p>
+        </div>
+        <button class="btn" id="addCustBtn">+ Register New Patient</button>
+      </div>
+
+      <div class="toolbar">
+        <input id="qCust" type="search" placeholder="Search patient name, phone, or doctor..." aria-label="Search patients" style="max-width:360px">
+      </div>
+
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Patient Name</th>
+              <th>Phone</th>
+              <th>Attending Doctor</th>
+              <th>Known Allergies</th>
+              <th>Prescription Notes</th>
+              <th>Registered</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody id="custRows"></tbody>
+        </table>
+      </div>
+    </main>
+  </div>
+</div>
+
+<!-- Add / Edit Patient Modal -->
+<div class="modal" id="custModal" role="dialog" aria-modal="true" aria-labelledby="custTitle">
+  <div class="modal-box">
+    <div class="modal-head">
+      <h2 id="custTitle">Register Patient</h2>
+      <button class="icon-btn" data-close aria-label="Close">✕</button>
+    </div>
+    <form id="custForm" novalidate>
+      <input type="hidden" id="c_id">
+      <div class="form-grid">
+        <div class="full">
+          <label for="c_name">Patient Full Name *</label>
+          <input id="c_name" required placeholder="e.g. Tariq Mehmood">
+        </div>
+        <div>
+          <label for="c_phone">Phone / WhatsApp *</label>
+          <input id="c_phone" required placeholder="03001234567">
+        </div>
+        <div>
+          <label for="c_doctor">Consultant Doctor / Clinic</label>
+          <input id="c_doctor" placeholder="e.g. Dr. Asif (Cardiologist)">
+        </div>
+        <div class="full">
+          <label for="c_allergies">Known Drug Allergies & Contraindications</label>
+          <input id="c_allergies" placeholder="e.g. Penicillin, Sulfa drugs, Aspirin">
+        </div>
+        <div class="full">
+          <label for="c_notes">Prescription Directions & Medical Notes</label>
+          <textarea id="c_notes" rows="3" placeholder="e.g. 1 Tablet daily after breakfast. Regular BP check."></textarea>
+        </div>
+      </div>
+      <div class="modal-foot">
+        <button type="button" class="btn ghost" data-close>Cancel</button>
+        <button type="submit" class="btn" id="saveCustBtn">Save Patient Record</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<script type="module" src="js/customers.js"></script>
+</body>
+</html>

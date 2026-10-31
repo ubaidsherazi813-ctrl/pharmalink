@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>POS & Billing · PharmaPulse PRO</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/variables.css">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<div class="app">
+  <aside class="sidebar" id="sidebar"></aside>
+
+  <div class="content">
+    <header class="topbar" id="topbar"></header>
+
+    <main class="page">
+      <div class="page-head">
+        <div>
+          <h1>🧾 Point of Sale (POS) & Counter Billing</h1>
+          <p class="muted">Instant medicine dispensing, stock deduction & thermal receipt generation</p>
+        </div>
+      </div>
+
+      <div class="pos">
+        <section class="card">
+          <div class="toolbar" style="margin-bottom:12px">
+            <input id="search" type="search" placeholder="🔍 Quick search medicine name, generic, or rack..." aria-label="Search medicine">
+          </div>
+          <div class="med-cards" id="cards"></div>
+        </section>
+
+        <aside class="card" aria-label="Cart">
+          <div class="card-head" style="margin-bottom:12px">
+            <h3>🛒 Active Cart</h3>
+            <span class="badge b-blue" id="cartCountBadge">0 Items</span>
+          </div>
+
+          <div style="margin-bottom:12px">
+            <label for="custSelect">Patient / Prescription</label>
+            <select id="custSelect">
+              <option value="">— Walk-in Customer —</option>
+            </select>
+          </div>
+
+          <div id="cart"></div>
+
+          <div class="totals">
+            <div class="row"><span>Gross Subtotal</span><span id="sub">PKR 0</span></div>
+            <div class="row">
+              <label for="disc" style="margin:0;align-self:center">Discount %</label>
+              <input id="disc" type="number" min="0" max="100" value="0" style="width:90px;height:34px">
+            </div>
+            <div class="row grand"><span>Payable Amount</span><span id="total">PKR 0</span></div>
+            <button class="btn success" id="sellBtn" disabled style="height:46px;font-size:16px;width:100%;margin-top:8px">
+              ⚡ Complete Sale & Generate Receipt
+            </button>
+          </div>
+        </aside>
+      </div>
+    </main>
+  </div>
+</div>
+
+<!-- Professional POS Thermal Receipt Modal -->
+<div class="modal" id="invModal" role="dialog" aria-modal="true" aria-label="Invoice">
+  <div class="modal-box" style="max-width:440px;padding:20px">
+    <div id="invoice"></div>
+    <div class="modal-foot">
+      <button class="btn ghost" data-close>Close</button>
+      <button class="btn" id="printBtn">🖨 Print 80mm Thermal Receipt</button>
+    </div>
+  </div>
+</div>
+
+<script type="module" src="js/billing.js"></script>
+</body>
+</html>

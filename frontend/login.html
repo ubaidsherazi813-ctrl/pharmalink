@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Login · PharmaPulse PRO</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/variables.css">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<div class="auth">
+  <section class="auth-art" aria-hidden="true">
+    <div class="auth-brand-badge">Enterprise Edition</div>
+    <h1 style="font-size:38px;line-height:1.15;margin-top:12px">💊 PharmaPulse<span style="font-size:24px;vertical-align:super;background:#fff;color:var(--blue);padding:2px 8px;border-radius:6px;margin-left:6px">PRO</span></h1>
+    <p style="font-size:18px;opacity:0.95;margin-top:8px">Next-generation pharmacy management system powered by pure Linked List Data Structures.</p>
+    
+    <div style="margin-top:24px;display:grid;gap:12px">
+      <div style="display:flex;align-items:center;gap:10px">
+        <span style="font-size:20px">⚡</span> <span><strong>Pure DSA Engine:</strong> In-memory nodes with zero database dependency</span>
+      </div>
+      <div style="display:flex;align-items:center;gap:10px">
+        <span style="font-size:20px">🛡️</span> <span><strong>Clinical Sentinel:</strong> Realtime openFDA drug indications & boxed warnings</span>
+      </div>
+      <div style="display:flex;align-items:center;gap:10px">
+        <span style="font-size:20px">🧾</span> <span><strong>Smart POS & Thermal Receipts:</strong> Instant stock deduction & QR validation</span>
+      </div>
+      <div style="display:flex;align-items:center;gap:10px">
+        <span style="font-size:20px">💬</span> <span><strong>WhatsApp Reorder:</strong> 1-click procurement dispatch to distributors</span>
+      </div>
+    </div>
+
+    <div style="margin-top:auto;padding-top:32px;font-size:13px;opacity:0.8">
+      Designed for SW 212: Data Structures & Algorithms Lab (Open Ended Project)
+    </div>
+  </section>
+
+  <section class="auth-form">
+    <div class="auth-card">
+      <div style="text-align:center;margin-bottom:20px">
+        <h2 id="heading" style="font-size:24px">Welcome Back 👋</h2>
+        <p class="muted" id="sub">Sign in to access your pharmacy control panel</p>
+      </div>
+
+      <div class="tabs" role="tablist">
+        <button type="button" id="tabLogin" class="active" role="tab">Pharmacist Login</button>
+        <button type="button" id="tabReg" role="tab">New Registration</button>
+      </div>
+
+      <form id="authForm" novalidate>
+        <div id="nameRow" class="hidden" style="margin-bottom:12px">
+          <label for="name">Pharmacist / Admin Full Name</label>
+          <input id="name" autocomplete="name" placeholder="e.g. Dr. Salman Khan">
+          <div class="err" id="eName"></div>
+        </div>
+        <div style="margin-bottom:12px">
+          <label for="email">Work Email</label>
+          <input id="email" type="email" autocomplete="email" placeholder="admin@pharmalink.com">
+          <div class="err" id="eEmail"></div>
+        </div>
+        <div style="margin-bottom:12px">
+          <label for="password">Password</label>
+          <div class="pw">
+            <input id="password" type="password" autocomplete="current-password" placeholder="••••••••">
+            <button type="button" class="icon-btn" id="togglePw" aria-label="Show or hide password">👁</button>
+          </div>
+          <div class="err" id="ePassword"></div>
+        </div>
+        <button class="btn" id="submitBtn" type="submit" style="width:100%;height:44px;font-size:15px">Sign In to Dashboard</button>
+      </form>
+
+      <div class="demo-hint">
+        <strong>Demo Admin Credentials:</strong><br>
+        Email: <code>admin@pharmalink.com</code><br>
+        Password: <code>Admin@123</code>
+      </div>
+    </div>
+  </section>
+</div>
+
+<script type="module" src="js/login.js"></script>
+</body>
+</html>

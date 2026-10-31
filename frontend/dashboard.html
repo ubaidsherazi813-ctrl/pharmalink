@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Dashboard · PharmaPulse PRO</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/variables.css">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<div class="app">
+  <aside class="sidebar" id="sidebar"></aside>
+
+  <div class="content">
+    <header class="topbar" id="topbar"></header>
+
+    <main class="page">
+      <!-- Page Header & Quick Launch Dock -->
+      <div class="dashboard-hero">
+        <div class="hero-text">
+          <div class="hero-badge">⚡ Enterprise Pharmacy Operating System</div>
+          <h1>Pharmacy Control Center</h1>
+          <p class="muted">Live inventory, POS operations, clinical drug sentinel, and linked-list telemetry.</p>
+        </div>
+        <div class="quick-dock">
+          <a class="dock-btn primary" href="/billing.html"><span>🧾</span> New POS Sale</a>
+          <a class="dock-btn" href="/medicines.html?add=1"><span>💊</span> Add Medicine</a>
+          <a class="dock-btn" href="/customers.html"><span>👥</span> New Patient</a>
+          <a class="dock-btn outline" href="/suppliers.html"><span>🏭</span> Reorder Stock</a>
+          <button class="dock-btn ghost" id="quickExportBtn"><span>⬇</span> Export CSV</button>
+        </div>
+      </div>
+
+      <!-- 8 High-Density KPI Cards -->
+      <div class="kpis-grid" id="kpis" aria-live="polite"></div>
+
+      <!-- 4 Interactive Analytics Charts -->
+      <div class="charts-grid">
+        <div class="card chart-card">
+          <div class="card-head">
+            <div>
+              <h3>Stock by Category</h3>
+              <p class="muted">Distribution of inventory across dosage forms</p>
+            </div>
+            <span class="badge b-blue">Live</span>
+          </div>
+          <div class="chart-box"><canvas id="chCat" role="img" aria-label="Stock by category chart"></canvas></div>
+        </div>
+
+        <div class="card chart-card">
+          <div class="card-head">
+            <div>
+              <h3>Sales & Revenue Trend</h3>
+              <p class="muted">Daily revenue performance (Last 7 Days)</p>
+            </div>
+            <span class="badge b-cyan" id="salesSummaryBadge">PKR 0</span>
+          </div>
+          <div class="chart-box"><canvas id="chSales" role="img" aria-label="Sales line chart"></canvas></div>
+        </div>
+
+        <div class="card chart-card">
+          <div class="card-head">
+            <div>
+              <h3>Expiry Risk Horizon</h3>
+              <p class="muted">Timeline of medicines approaching expiry</p>
+            </div>
+            <span class="badge b-amber">Audit</span>
+          </div>
+          <div class="chart-box"><canvas id="chExp" role="img" aria-label="Expiry timeline chart"></canvas></div>
+        </div>
+
+        <div class="card chart-card">
+          <div class="card-head">
+            <div>
+              <h3>Top 5 Fast-Moving Medicines</h3>
+              <p class="muted">Highest dispensing volume this week</p>
+            </div>
+            <span class="badge b-green">Best Sellers</span>
+          </div>
+          <div class="chart-box"><canvas id="chTop" role="img" aria-label="Top sellers chart"></canvas></div>
+        </div>
+      </div>
+
+      <!-- Operations Desk: Emergency Restock & Batch Quarantine -->
+      <div class="grid2" style="margin-top:20px">
+        <div class="card" id="alerts">
+          <div class="card-head">
+            <div>
+              <h3>⚡ Emergency Stock Reorder Desk</h3>
+              <p class="muted">Medicines at or below reorder level — 1-click WhatsApp restock</p>
+            </div>
+            <span class="badge b-amber" id="lowStockCountBadge">0 Items</span>
+          </div>
+          <div class="ops-list" id="reorderList"></div>
+        </div>
+
+        <div class="card">
+          <div class="card-head">
+            <div>
+              <h3>⛔ Expiry & Quarantine Desk</h3>
+              <p class="muted">Batches expired or within 30 days — isolate from counter</p>
+            </div>
+            <span class="badge b-red" id="expiryCountBadge">0 Items</span>
+          </div>
+          <div class="ops-list" id="quarantineList"></div>
+        </div>
+      </div>
+
+      <!-- Financial Calculator & Clinical Safety Sentinel (Market-Grade PMS Features) -->
+      <div class="grid2" style="margin-top:20px">
+        <!-- Live FX & Imported Medicine Margin Calculator -->
+        <div class="card fx-card">
+          <div class="card-head">
+            <div>
+              <h3>💱 Imported Drug Landed Cost Calculator</h3>
+              <p class="muted" id="fxRateLabel">Fetching live Open Exchange Rates...</p>
+            </div>
+            <span class="badge b-cyan">Open.ER API</span>
+          </div>
+          <div class="calc-grid">
+            <div>
+              <label for="c_fob">FOB Unit Price ($ USD)</label>
+              <input id="c_fob" type="number" step="0.01" value="5.00" placeholder="e.g. 10.50">
+            </div>
+            <div>
+              <label for="c_duty">Freight & Tariff (%)</label>
+              <input id="c_duty" type="number" step="0.5" value="15" placeholder="15%">
+            </div>
+            <div>
+              <label for="c_margin">Target Retail Margin (%)</label>
+              <input id="c_margin" type="number" step="1" value="25" placeholder="25%">
+            </div>
+            <div>
+              <label>&nbsp;</label>
+              <button class="btn" id="calcFxBtn" type="button" style="width:100%">Calculate PKR Pricing</button>
+            </div>
+          </div>
+          <div class="calc-results" id="fxResults">
+            <div class="res-item"><span>Landed Cost (PKR):</span> <strong id="resLanded">PKR 0</strong></div>
+            <div class="res-item"><span>Suggested Retail (PKR):</span> <strong id="resRetail" class="highlight">PKR 0</strong></div>
+            <div class="res-item"><span>Gross Profit / Unit:</span> <strong id="resProfit">PKR 0</strong></div>
+          </div>
+        </div>
+
+        <!-- openFDA Drug Safety Sentinel -->
+        <div class="card sentinel-card">
+          <div class="card-head">
+            <div>
+              <h3>🛡️ Clinical Drug Sentinel (openFDA Live)</h3>
+              <p class="muted">Instant verification of clinical usage, boxed warnings & safety</p>
+            </div>
+            <span class="badge b-purple">FDA Certified</span>
+          </div>
+          <div class="sentinel-search">
+            <input id="sentinelInput" type="search" placeholder="Type drug name (e.g. Paracetamol, Amoxicillin, Ibuprofen)..." aria-label="Search drug safety">
+            <button class="btn purple" id="sentinelBtn" type="button">Inspect Drug</button>
+          </div>
+          <div class="sentinel-result" id="sentinelBox">
+            <div class="sentinel-placeholder">Enter a medicine brand or generic formulation above to query FDA indications, contraindications, and active boxed warnings.</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- DSA Linked List Telemetry & Shift Audit Trail -->
+      <div class="grid2" style="margin-top:20px">
+        <!-- Live Academic DSA Linked List Engine Telemetry -->
+        <div class="card dsa-card">
+          <div class="card-head">
+            <div>
+              <h3>🔗 Pure DSA Linked-List Engine Telemetry</h3>
+              <p class="muted">Internal memory state — No SQL/NoSQL used (Group A Specification)</p>
+            </div>
+            <span class="badge b-blue">Academic Grade</span>
+          </div>
+          <div class="telemetry-grid">
+            <div class="tel-item">
+              <div class="tel-label">Active Nodes</div>
+              <div class="tel-val" id="telNodes">0</div>
+              <div class="tel-sub">Singularly linked</div>
+            </div>
+            <div class="tel-item">
+              <div class="tel-label">Head Node Pointer</div>
+              <div class="tel-val sm" id="telHead">NULL</div>
+              <div class="tel-sub">O(1) Insertion</div>
+            </div>
+            <div class="tel-item">
+              <div class="tel-label">Tail Node Pointer</div>
+              <div class="tel-val sm" id="telTail">NULL</div>
+              <div class="tel-sub">O(1) Append</div>
+            </div>
+            <div class="tel-item">
+              <div class="tel-label">Sorting Algorithm</div>
+              <div class="tel-val sm">Merge Sort</div>
+              <div class="tel-sub">O(n log n) stable</div>
+            </div>
+          </div>
+          <div class="dsa-footer">
+            <a href="/visualizer.html" class="btn outline sm">Open Live Visualizer Node Animator →</a>
+            <span class="muted" style="font-size:12px">Auto-persisted via Atomic JSON Snapshots</span>
+          </div>
+        </div>
+
+        <!-- Shift Register & Audit Activity Stream -->
+        <div class="card">
+          <div class="card-head">
+            <div>
+              <h3>📝 Shift Activity & Audit Trail</h3>
+              <p class="muted">Live operational events recorded by system</p>
+            </div>
+            <span class="badge b-green">Realtime</span>
+          </div>
+          <div class="act-stream" id="actList"></div>
+        </div>
+      </div>
+
+    </main>
+  </div>
+</div>
+
+<script src="js/vendor/chart.umd.js"></script>
+<script type="module" src="js/dashboard.js"></script>
+</body>
+</html>

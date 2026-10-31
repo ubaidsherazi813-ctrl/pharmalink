@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>DSA Visualizer · PharmaPulse PRO</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/variables.css">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<div class="app">
+  <aside class="sidebar" id="sidebar"></aside>
+
+  <div class="content">
+    <header class="topbar" id="topbar"></header>
+
+    <main class="page">
+      <div class="page-head">
+        <div>
+          <h1>🔗 Linked List Data Structure Visualizer</h1>
+          <p class="muted">Live interactive demonstration of singly linked list nodes, pointer manipulation & asymptotic complexity</p>
+        </div>
+      </div>
+
+      <section class="card">
+        <div class="toolbar">
+          <input id="vq" placeholder="Type medicine name or node label..." aria-label="Medicine name or node label" style="max-width:320px">
+          <button class="btn" id="bSearch">Search Node</button>
+          <button class="btn danger" id="bDelete">Delete Node</button>
+          <button class="btn success" id="bHead">Insert at Head</button>
+          <button class="btn purple" id="bTail">Insert at Tail</button>
+          <button class="btn outline" id="bRev">Reverse Pointers</button>
+          <button class="btn outline" id="bSort">Merge Sort (A-Z)</button>
+          <button class="btn ghost" id="bReset">Reset State</button>
+        </div>
+        <div class="chain" id="chain" aria-live="polite"></div>
+      </section>
+
+      <div class="grid2" style="margin-top:20px">
+        <section class="card">
+          <div class="card-head">
+            <h3>Algorithm Step-by-Step Analysis</h3>
+            <span class="badge b-blue">Execution Trace</span>
+          </div>
+          <div id="info" class="muted" style="line-height:1.7;padding:8px 0">
+            Select any operation above (Search, Insert, Reverse, or Sort) to observe live pointer movements, traversal step count, and big-O time complexity.
+          </div>
+        </section>
+
+        <section class="card">
+          <div class="card-head">
+            <h3>Time & Space Complexity Reference (Lab Rubric)</h3>
+            <span class="badge b-purple">DSA Specs</span>
+          </div>
+          <div class="table-wrap">
+            <table style="min-width:0">
+              <thead>
+                <tr>
+                  <th>Algorithm / Method</th>
+                  <th>Time Complexity</th>
+                  <th>Space Complexity</th>
+                  <th>Mechanism</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><code>insertAtHead(data)</code></td>
+                  <td><span class="badge b-green">O(1)</span></td>
+                  <td><span class="badge b-green">O(1)</span></td>
+                  <td>New node points to head; head updated</td>
+                </tr>
+                <tr>
+                  <td><code>insertAtTail(data)</code></td>
+                  <td><span class="badge b-green">O(1)</span></td>
+                  <td><span class="badge b-green">O(1)</span></td>
+                  <td>Tail pointer next updated; tail moves</td>
+                </tr>
+                <tr>
+                  <td><code>findById(id) / search</code></td>
+                  <td><span class="badge b-amber">O(n)</span></td>
+                  <td><span class="badge b-green">O(1)</span></td>
+                  <td>Sequential node traversal from head</td>
+                </tr>
+                <tr>
+                  <td><code>deleteById(id)</code></td>
+                  <td><span class="badge b-amber">O(n)</span></td>
+                  <td><span class="badge b-green">O(1)</span></td>
+                  <td>Pointer bypass: <code>prev.next = cur.next</code></td>
+                </tr>
+                <tr>
+                  <td><code>reverse()</code></td>
+                  <td><span class="badge b-amber">O(n)</span></td>
+                  <td><span class="badge b-green">O(1)</span></td>
+                  <td>In-place pointer reversal (prev, cur, next)</td>
+                </tr>
+                <tr>
+                  <td><code>sortBy() (Merge Sort)</code></td>
+                  <td><span class="badge b-purple">O(n log n)</span></td>
+                  <td><span class="badge b-amber">O(log n)</span></td>
+                  <td>Divide & conquer with slow/fast pointers</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+      </div>
+    </main>
+  </div>
+</div>
+
+<script type="module" src="js/visualizer.js"></script>
+</body>
+</html>

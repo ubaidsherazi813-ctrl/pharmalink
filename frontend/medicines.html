@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Medicines & Inventory · PharmaPulse PRO</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/variables.css">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<div class="app">
+  <aside class="sidebar" id="sidebar"></aside>
+
+  <div class="content">
+    <header class="topbar" id="topbar"></header>
+
+    <main class="page">
+      <div class="page-head">
+        <div>
+          <h1>💊 Medicines & Inventory Control</h1>
+          <p class="muted">Manage pharmaceutical catalog, batch expiry, rack locations & stock levels</p>
+        </div>
+        <button class="btn" id="addBtn">+ Add New Medicine</button>
+      </div>
+
+      <div class="toolbar">
+        <input id="q" type="search" placeholder="Search name, generic, batch, rack..." aria-label="Search">
+        <select id="category" aria-label="Category"><option value="">All categories</option></select>
+        <select id="status" aria-label="Status">
+          <option value="">All status</option>
+          <option value="ok">In Stock</option>
+          <option value="low">Low Stock</option>
+          <option value="expiring">Expiring Soon</option>
+          <option value="expired">Expired</option>
+          <option value="out">Out of Stock</option>
+        </select>
+        <select id="sort" aria-label="Sort">
+          <option value="name:asc">Name A → Z</option>
+          <option value="name:desc">Name Z → A</option>
+          <option value="quantity:asc">Quantity low → high</option>
+          <option value="quantity:desc">Quantity high → low</option>
+          <option value="expiryDate:asc">Expiry soonest</option>
+          <option value="expiryDate:desc">Expiry latest</option>
+          <option value="salePrice:asc">Price low → high</option>
+          <option value="salePrice:desc">Price high → low</option>
+        </select>
+        <button class="btn ghost" id="exportBtn">⬇ Export CSV</button>
+      </div>
+
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Medicine Name</th>
+              <th>Category</th>
+              <th>Batch</th>
+              <th>Rack / Shelf</th>
+              <th>Qty</th>
+              <th>Price</th>
+              <th>Expiry</th>
+              <th>Status</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody id="rows"></tbody>
+        </table>
+      </div>
+
+      <div class="pager">
+        <span class="muted" id="pageInfo"></span>
+        <button class="btn ghost sm" id="prev">‹ Prev</button>
+        <button class="btn ghost sm" id="next">Next ›</button>
+      </div>
+    </main>
+  </div>
+</div>
+
+<!-- Add / Edit modal -->
+<div class="modal" id="formModal" role="dialog" aria-modal="true" aria-labelledby="formTitle">
+  <div class="modal-box">
+    <div class="modal-head">
+      <h2 id="formTitle">Add Medicine</h2>
+      <button class="icon-btn" data-close aria-label="Close">✕</button>
+    </div>
+    <form id="medForm" novalidate>
+      <input type="hidden" id="f_id">
+      <div class="form-grid">
+        <div class="full">
+          <label for="f_name">Medicine Name *</label>
+          <input id="f_name" list="nameSuggest" maxlength="100" required placeholder="e.g. Panadol 500mg">
+          <datalist id="nameSuggest"></datalist>
+        </div>
+        <div>
+          <label for="f_generic">Generic Active Formulation</label>
+          <input id="f_generic" placeholder="e.g. Paracetamol">
+        </div>
+        <div>
+          <label for="f_category">Dosage Category *</label>
+          <select id="f_category"></select>
+        </div>
+        <div>
+          <label for="f_batch">Batch No. *</label>
+          <input id="f_batch" required placeholder="e.g. PN-4029">
+        </div>
+        <div>
+          <label for="f_rack">Rack / Shelf Location</label>
+          <input id="f_rack" placeholder="e.g. Rack A-02 / Shelf 3">
+        </div>
+        <div>
+          <label for="f_manufacturer">Manufacturer</label>
+          <input id="f_manufacturer" placeholder="e.g. GSK, Abbott, Getz">
+        </div>
+        <div>
+          <label for="f_supplier">Primary Wholesale Supplier</label>
+          <select id="f_supplier"></select>
+        </div>
+        <div>
+          <label for="f_expiry">Expiry Date *</label>
+          <input id="f_expiry" type="date" required>
+        </div>
+        <div>
+          <label for="f_qty">Units in Stock *</label>
+          <input id="f_qty" type="number" min="0" step="1" required placeholder="0">
+        </div>
+        <div>
+          <label for="f_reorder">Low Stock Alert Level</label>
+          <input id="f_reorder" type="number" min="0" step="1" value="10">
+        </div>
+        <div>
+          <label for="f_buy">Purchase Price (PKR) *</label>
+          <input id="f_buy" type="number" min="0.01" step="0.01" required placeholder="0.00">
+        </div>
+        <div>
+          <label for="f_sell">Retail Sale Price (PKR) *</label>
+          <input id="f_sell" type="number" min="0.01" step="0.01" required placeholder="0.00">
+        </div>
+        <div class="full info-box">
+          💱 <strong>Imported Medicine?</strong> USD Unit Price: 
+          <input id="f_usd" type="number" min="0" step="0.01" style="width:110px;height:32px;display:inline-block;margin:0 6px"> 
+          <button type="button" class="btn sm outline" id="convBtn">Convert to PKR</button> 
+          <span class="muted" id="rateNote" style="margin-left:8px"></span>
+        </div>
+      </div>
+      <div class="modal-foot">
+        <button type="button" class="btn ghost" data-close>Cancel</button>
+        <button type="submit" class="btn" id="saveBtn">Save Medicine</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- View modal -->
+<div class="modal" id="viewModal" role="dialog" aria-modal="true" aria-labelledby="viewTitle">
+  <div class="modal-box">
+    <div class="modal-head">
+      <h2 id="viewTitle">Medicine Dossier</h2>
+      <button class="icon-btn" data-close aria-label="Close">✕</button>
+    </div>
+    <div id="viewBody"></div>
+  </div>
+</div>
+
+<script type="module" src="js/medicines.js"></script>
+</body>
+</html>

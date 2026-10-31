@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Suppliers · PharmaPulse PRO</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/variables.css">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<div class="app">
+  <aside class="sidebar" id="sidebar"></aside>
+
+  <div class="content">
+    <header class="topbar" id="topbar"></header>
+
+    <main class="page">
+      <div class="page-head">
+        <div>
+          <h1>🏭 Wholesale Suppliers & Procurement</h1>
+          <p class="muted">Manage pharmaceutical distributors and dispatch instant WhatsApp restock orders</p>
+        </div>
+        <button class="btn" id="addBtn">+ Add Wholesale Supplier</button>
+      </div>
+
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Distributor / Supplier Name</th>
+              <th>WhatsApp / Phone</th>
+              <th>Email</th>
+              <th>Warehouse Address</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody id="rows"></tbody>
+        </table>
+      </div>
+    </main>
+  </div>
+</div>
+
+<div class="modal" id="supModal" role="dialog" aria-modal="true" aria-labelledby="supTitle">
+  <div class="modal-box">
+    <div class="modal-head">
+      <h2 id="supTitle">Add Supplier</h2>
+      <button class="icon-btn" data-close aria-label="Close">✕</button>
+    </div>
+    <form id="supForm" novalidate>
+      <input type="hidden" id="s_id">
+      <div class="form-grid">
+        <div class="full">
+          <label for="s_name">Distributor Company Name *</label>
+          <input id="s_name" required placeholder="e.g. Alpha Distributors Karachi">
+        </div>
+        <div>
+          <label for="s_phone">WhatsApp Phone (with Country Code) *</label>
+          <input id="s_phone" placeholder="923001234567" required>
+        </div>
+        <div>
+          <label for="s_email">Official Email</label>
+          <input id="s_email" type="email" placeholder="orders@distributor.com">
+        </div>
+        <div class="full">
+          <label for="s_address">Depot / Warehouse Address</label>
+          <input id="s_address" placeholder="e.g. Plot 42, Korangi Industrial Area, Karachi">
+        </div>
+      </div>
+      <div class="modal-foot">
+        <button type="button" class="btn ghost" data-close>Cancel</button>
+        <button class="btn" id="saveBtn" type="submit">Save Supplier Record</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<div class="modal" id="reModal" role="dialog" aria-modal="true" aria-labelledby="reTitle">
+  <div class="modal-box">
+    <div class="modal-head">
+      <h2 id="reTitle">Dispatch WhatsApp Restock Order</h2>
+      <button class="icon-btn" data-close aria-label="Close">✕</button>
+    </div>
+    <div class="form-grid">
+      <div class="full">
+        <label for="r_med">Select Medicine (Low stock prioritized)</label>
+        <select id="r_med"></select>
+      </div>
+      <div>
+        <label for="r_qty">Quantity to Order (Units / Boxes)</label>
+        <input id="r_qty" type="number" min="1" value="50">
+      </div>
+      <div class="full info-box">
+        💬 Clicking below will open WhatsApp with an auto-drafted procurement order addressed to the distributor.
+      </div>
+    </div>
+    <div class="modal-foot">
+      <button class="btn ghost" data-close>Cancel</button>
+      <button class="btn success" id="waBtn">💬 Launch WhatsApp Order</button>
+    </div>
+  </div>
+</div>
+
+<script type="module" src="js/suppliers.js"></script>
+</body>
+</html>
